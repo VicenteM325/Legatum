@@ -29,6 +29,18 @@
                 <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
+             <!-- Campo de selección para el rol -->
+             <div class="mt-4">
+                <x-label for="rol_id" value="{{ __('Role') }}" />
+                <select id="rol_id" name="rol_id" class="block mt-1 w-full" required>
+                    @foreach ($roles as $role)
+                    <option value="{{ $role->id }}" {{ old('rol_id') == $role->id ? 'selected' : '' }}>
+                    {{ $role->nombre }}
+                    </option>
+                    @endforeach
+                </select>
+                </div>
+
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
                     <x-label for="terms">
