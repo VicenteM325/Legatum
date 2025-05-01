@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <p>Welcome Ayudante.</p>
+    <p>Welcome Ayudante Pool.</p>
 @stop
 
 @section('css')

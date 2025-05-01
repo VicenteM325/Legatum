@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\PanelsController;
+namespace App\Http\Controllers\PanelsController\Consultor;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
