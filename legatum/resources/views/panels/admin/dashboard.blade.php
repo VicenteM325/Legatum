@@ -93,7 +93,21 @@
             </div>
         </a>
     </div>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+    <a href="{{ route('admin.users.index') }}" style="text-decoration: none; color: inherit;">
+        <div class="small-box bg-dark">
+            <div class="inner">
+                <h3>{{ $totalUsuarios ?? '---' }}</h3>
+                <p>Total Usuarios</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user-cog"></i>
+            </div>
+        </div>
+    </a>
 </div>
+</div>
+
 
 <!-- Accesos rápidos -->
 <div class="card mt-4">

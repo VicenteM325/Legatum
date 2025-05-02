@@ -4,15 +4,20 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (auth()->check() && auth()->user()->role->nombre === $role) {
-            return $next($request);
+        if (!auth()->check()) {
+            return redirect()->route('login');
         }
 
-        abort(403, 'No tienes permiso para acceder.');
+        if (auth()->user()->role !== $role) {
+            abort(403, 'Acceso no autorizado para este rol');
+        }
+
+        return $next($request);
     }
 }

@@ -9,20 +9,20 @@ class DashboardController extends Controller
 
     public function redirectToDashboard()
     {
-        $user = Auth::user();
 
-        // Verificar si el usuario tiene un rol
-        if (!$user->role) {
-            return redirect()->route('home')->with('error', 'No tienes un rol asignado.');
-        }
-
-        // Redirigir al usuario según su rol
-        return redirect(match ($user->role->nombre) {
-            'Administrador' => route('admin.dashboard'),
-            'Ayudante' => route('ayudante.dashboard'),
-            'Auditor' => route('auditor.dashboard'),
-            'Consultor' => route('consultor.dashboard'),
-            default => route('home'), // Redirige a la página de inicio
-        });
+            if (auth()->user()->isAdmin()) {
+                return redirect()->route('admin.dashboard');
+            }
+        
+            if (auth()->user()->isAssistant()) {
+                return redirect()->route('ayudante.dashboard');
+            }
+            if (auth()->user()->isAuditor()) {
+                return redirect()->route('auditor.dashboard');
+            }
+            if (auth()->user()->isConsultor()) {
+                return redirect()->route('consultor.dashboard');
+            }
+            abort(403, 'Rol no autorizado');
     }
 }

@@ -10,6 +10,14 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class PagoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:ver_pagos')->only(['index', 'show']);
+        $this->middleware('permission:crear_pagos')->only(['create', 'store']);
+        $this->middleware('permission:editar_pagos')->only(['edit', 'update']);
+        $this->middleware('permission:eliminar_pagos')->only(['destroy']);
+    }
+
     public function index()
     {
     $pagos = Pago::all(); 

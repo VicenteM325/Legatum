@@ -1,8 +1,14 @@
 <x-guest-layout>
     <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
+         <x-slot name="logo">
+             <div class="flex flex-col items-center mb-6">
+                <img src="{{ asset('vendor/adminlte/dist/img/LogoLegatum.png') }}"
+                    alt="LEGATUM Logo"
+                    class="w-16 h-16 rounded-full object-cover shadow-md" />
+                <h1 class="text-lg font-serif text-gray-700 mt-3 tracking-widest">GESTOR DE NICHOS</h1>
+            </div>
         </x-slot>
+
 
         <x-validation-errors class="mb-4" />
 

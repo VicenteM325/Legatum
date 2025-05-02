@@ -65,9 +65,57 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    /**Model para roles */
+          /**
+     * Relación con el modelo Role
+     */
     public function role()
     {
-        return $this->belongsTo(Role::class, 'rol_id');
+        return $this->belongsTo(Role::class, 'rol_id'); 
     }
+
+    /**
+     * Verifica si el usuario es administrador
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role && $this->role->nombre === 'Administrador';
+    }
+
+    /**
+     * Verifica si el usuario es ayudante
+     */
+    public function isAssistant(): bool
+    {
+        return $this->role && $this->role->nombre === 'Ayudante';
+    }
+    /**
+     * Verifica si el usuario es ayudante
+     */
+    public function isAuditor(): bool
+    {
+        return $this->role && $this->role->nombre === 'Auditor';
+    }
+    /**
+     * Verifica si el usuario es consultor
+     */
+    public function isConsultor(): bool
+    {
+        return $this->role && $this->role->nombre === 'Consultor';
+    }
+
+    /**
+     * Verifica si el usuario tiene un permiso específico
+     */
+    public function canAccess(string $permission): bool
+    {
+        // Verificación segura con carga eager de permisos
+        return $this->role && $this->role->permissions
+            ->where('nombre', $permission)
+            ->isNotEmpty();
+    }
+
+    /**
+     * Carga siempre la relación role con sus permisos
+     */
+    protected $with = ['role.permissions'];
 }

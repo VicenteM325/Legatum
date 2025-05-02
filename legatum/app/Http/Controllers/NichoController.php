@@ -4,17 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Nicho;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class NichoController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:ver_nichos')->only(['index', 'show']);
+        $this->middleware('permission:crear_nichos')->only(['create', 'store']);
+        $this->middleware('permission:editar_nichos')->only(['edit', 'update']);
+        $this->middleware('permission:eliminar_nichos')->only(['destroy']);
+    }
     public function index()
-{
-    $nichos = Nicho::all();
-    $callesUnicas = Nicho::select('calle')->distinct()->orderBy('calle')->pluck('calle');
-    $avenidasUnicas = Nicho::select('avenida')->distinct()->orderBy('avenida')->pluck('avenida');
+    {
+        $nichos = Nicho::all();
+        $callesUnicas = Nicho::select('calle')->distinct()->orderBy('calle')->pluck('calle');
+        $avenidasUnicas = Nicho::select('avenida')->distinct()->orderBy('avenida')->pluck('avenida');
     
-    return view('nichos.index', compact('nichos', 'callesUnicas', 'avenidasUnicas'));
-}
+        return view('nichos.index', compact('nichos', 'callesUnicas', 'avenidasUnicas'));
+    }
 
     public function create()
     {

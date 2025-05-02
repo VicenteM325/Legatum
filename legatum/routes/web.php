@@ -8,10 +8,13 @@ use App\Http\Controllers\NichoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\OcupanteController;
 use App\Http\Controllers\ResponsableController;
+use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\PanelsController\Admin\UserController;
 use App\Http\Controllers\PanelsController\Admin\AdminController;
 use App\Http\Controllers\PanelsController\Ayudante\AyudanteController;
 use App\Http\Controllers\PanelsController\Auditor\AuditorController;
 use App\Http\Controllers\PanelsController\Consultor\ConsultorController;
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -49,16 +52,44 @@ Route::middleware([
     Route::put('pagos/{pago}/update_estado', [PagoController::class, 'updateEstado'])->name('pagos.update_estado');
 
 
-    //Route::get('pagos/generar-boleta/{contratoId}', [PagoController::class, 'generarBoleta'])->name('pagos.generarBoleta');
-    //Route::get('pagos/ver-boleta/{pago}', [PagoController::class, 'verBoletaPDF'])->name('pagos.verBoletaPDF');
-
-
     //Contratos
     Route::resource('contratos', ContratoController::class);
 
 
     //Nichos
+    Route::middleware('permission:ver_nichos')->group(function () {
+        Route::get('/nichos', [NichoController::class, 'index']);
+        Route::get('/nichos/{nicho}', [NichoController::class, 'show']);
+    });
+    
+    Route::middleware('permission:crear_nichos')->group(function () {
+        Route::get('/nichos/create', [NichoController::class, 'create']);
+        Route::post('/nichos', [NichoController::class, 'store']);
+    });
     Route::resource('nichos', NichoController::class);
+
+    //Ayudante
+    Route::middleware(['permission:ver_nichos'])->group(function () {
+        Route::get('/nichos', [NichoController::class, 'index'])->name('nichos.index');
+        Route::get('/nichos/{nicho}', [NichoController::class, 'show'])->name('nichos.show');
+    });
+
+    Route::middleware(['permission:crear_nichos'])->group(function () {
+        Route::get('/nichos/create', [NichoController::class, 'create'])->name('nichos.create');
+        Route::post('/nichos', [NichoController::class, 'store'])->name('nichos.store');
+    });
+
+    //Reportes
+    Route::get('/ayudante/reportes', [ReporteController::class, 'index'])->name('ayudante.reportes');
+
+    Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', \App\Http\Controllers\PanelsController\Admin\UserController::class);
+    });
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::resource('admin/users', UserController::class);
+    });
+    Route::resource('admin/users', UserController::class)->names('admin.users');
 
     
 });

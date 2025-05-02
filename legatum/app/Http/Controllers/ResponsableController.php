@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class ResponsableController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:ver_responsables')->only(['index', 'show']);
+        $this->middleware('permission:crear_responsables')->only(['create', 'store']);
+        $this->middleware('permission:editar_responsables')->only(['edit', 'update']);
+        $this->middleware('permission:eliminar_responsables')->only(['destroy']);
+    }
 
     public function create()
     {

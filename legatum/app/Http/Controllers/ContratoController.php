@@ -10,8 +10,15 @@ use Illuminate\Http\Request;
 
 class ContratoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:ver_contratos')->only(['index', 'show']);
+        $this->middleware('permission:crear_contratos')->only(['create', 'store']);
+        $this->middleware('permission:editar_contratos')->only(['edit', 'update']);
+        $this->middleware('permission:eliminar_contratos')->only(['destroy']);
+    }
     // Mostrar la lista de contratos
-    public function index()
+    public function index() 
     {
         $contratos = Contrato::with('nicho', 'ocupante', 'responsable')->get();
         return view('contratos.index', compact('contratos'));

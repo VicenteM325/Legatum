@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class OcupanteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:ver_ocupantes')->only(['index', 'show']);
+        $this->middleware('permission:crear_ocupantes')->only(['create', 'store']);
+        $this->middleware('permission:editar_ocupantes')->only(['edit', 'update']);
+        $this->middleware('permission:eliminar_ocupantes')->only(['destroy']);
+    }
 
     public function create()
     {
